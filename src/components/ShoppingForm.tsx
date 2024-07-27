@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TextField, Button } from '@mui/material';
 import { ShoppingItem } from '../api';
 
 interface ShoppingFormProps {
@@ -16,14 +17,20 @@ const ShoppingForm: React.FC<ShoppingFormProps> = ({ addItem }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type='text'
-        placeholder='Add Item'
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: 'flex', alignItems: 'center' }}
+    >
+      <TextField
+        label='Add Item'
+        variant='outlined'
         value={name}
         onChange={(e) => setName(e.target.value)}
+        style={{ marginRight: '10px' }}
       />
-      <button type='submit'>Add</button>
+      <Button variant='contained' color='primary' type='submit'>
+        Add
+      </Button>
     </form>
   );
 };

@@ -1,4 +1,7 @@
 import React from 'react';
+import { ListItem, IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { ShoppingItem } from '../api';
 
 interface ShoppingItemProps {
@@ -15,16 +18,24 @@ const ShoppingItemComponent: React.FC<ShoppingItemProps> = ({
   const handleEdit = () => {
     const updatedName = prompt('Enter new name:', item.name);
     if (updatedName) {
-      editItem(item.id, { name: updatedName, isComplete: item.isComplete });
+      editItem(item.id, {
+        name: updatedName,
+        isComplete: item.isComplete,
+        position: item.position,
+      });
     }
   };
 
   return (
-    <li>
+    <ListItem>
       {item.name}
-      <button onClick={handleEdit}>Edit</button>
-      <button onClick={() => removeItem(item.id)}>Delete</button>
-    </li>
+      <IconButton onClick={handleEdit}>
+        <EditIcon />
+      </IconButton>
+      <IconButton onClick={() => removeItem(item.id)}>
+        <DeleteIcon />
+      </IconButton>
+    </ListItem>
   );
 };
 

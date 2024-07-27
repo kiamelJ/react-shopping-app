@@ -8,6 +8,7 @@ import axios from 'axios';
     id: number;
     name: string;
     isComplete: boolean;
+    position: number;
  }
 
  export const fetchItems = async (): Promise<ShoppingItem[]> => {
@@ -29,3 +30,7 @@ export const updateItem = async (id: number, item: Omit<ShoppingItem, 'id'>): Pr
     const response = await api.delete(`/shoppingitems/${id}`);
     return response.data;
  };
+
+ export const updateOrder = async (reorderedItems: ShoppingItem[]): Promise<void> => {
+  await api.put('/shoppingitems/updateOrder', reorderedItems);
+};
