@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListItem, IconButton } from '@mui/material';
+import { ListItem, IconButton, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ShoppingItem } from '../api';
@@ -28,13 +28,23 @@ const ShoppingItemComponent: React.FC<ShoppingItemProps> = ({
 
   return (
     <ListItem>
-      {item.name}
-      <IconButton onClick={handleEdit}>
-        <EditIcon />
-      </IconButton>
-      <IconButton onClick={() => removeItem(item.id)}>
-        <DeleteIcon />
-      </IconButton>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}
+      >
+        <span>{item.name}</span>
+        <Box>
+          <IconButton onClick={handleEdit}>
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={() => removeItem(item.id)}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+      </Box>
     </ListItem>
   );
 };
