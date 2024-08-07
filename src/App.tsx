@@ -26,7 +26,6 @@ const App: React.FC = () => {
   useEffect(() => {
     const getItems = async () => {
       const itemsFromServer = await fetchItems();
-      console.log('Fetched items:', itemsFromServer); // Debugging: Log fetched items
       setItems(itemsFromServer);
       setLoading(false);
     };
@@ -39,10 +38,11 @@ const App: React.FC = () => {
   };
 
   const editItem = async (
-    id: number,
+    id: string,
     updatedItem: Omit<ShoppingItem, 'id'>
   ) => {
     try {
+      console.log('Editing item with id:', id); // Debug log
       const newItem = await updateItem(id, updatedItem);
       setItems(items.map((item) => (item.id === id ? newItem : item)));
     } catch (error) {
@@ -50,7 +50,7 @@ const App: React.FC = () => {
     }
   };
 
-  const removeItem = async (id: number) => {
+  const removeItem = async (id: string) => {
     try {
       await deleteItem(id);
       setItems(items.filter((item) => item.id !== id));
@@ -71,6 +71,7 @@ const App: React.FC = () => {
     });
 
     setItems(reorderedItems);
+    console.log('Updating order with:', reorderedItems); // Debug log
     updateOrder(reorderedItems);
   };
 
@@ -81,7 +82,7 @@ const App: React.FC = () => {
           <Typography variant='h4' align='center' gutterBottom>
             Shopping List
           </Typography>
-          <ShoppingForm addItem={addItem} />
+          <ShoppingForm addItem={addItem} items={items} />
           {loading ? (
             <div
               style={{

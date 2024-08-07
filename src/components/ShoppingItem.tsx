@@ -6,8 +6,8 @@ import { ShoppingItem } from '../api';
 
 interface ShoppingItemProps {
   item: ShoppingItem;
-  editItem: (id: number, item: Omit<ShoppingItem, 'id'>) => void;
-  removeItem: (id: number) => void;
+  editItem: (id: string, item: Omit<ShoppingItem, 'id'>) => void;
+  removeItem: (id: string) => void;
 }
 
 const ShoppingItemComponent: React.FC<ShoppingItemProps> = ({
@@ -18,12 +18,19 @@ const ShoppingItemComponent: React.FC<ShoppingItemProps> = ({
   const handleEdit = () => {
     const updatedName = prompt('Enter new name:', item.name);
     if (updatedName) {
+      console.log('Editing item:', item.id); // Debug log
+
       editItem(item.id, {
         name: updatedName,
         isComplete: item.isComplete,
         position: item.position,
       });
     }
+  };
+
+  const handleRemove = () => {
+    console.log('Removing item:', item.id); // Debug log
+    removeItem(item.id);
   };
 
   return (
@@ -40,7 +47,7 @@ const ShoppingItemComponent: React.FC<ShoppingItemProps> = ({
           <IconButton onClick={handleEdit}>
             <EditIcon />
           </IconButton>
-          <IconButton onClick={() => removeItem(item.id)}>
+          <IconButton onClick={handleRemove}>
             <DeleteIcon />
           </IconButton>
         </Box>

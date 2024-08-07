@@ -6,8 +6,8 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 interface ShoppingListProps {
   items: ShoppingItem[];
-  editItem: (id: number, item: Omit<ShoppingItem, 'id'>) => void;
-  removeItem: (id: number) => void;
+  editItem: (id: string, item: Omit<ShoppingItem, 'id'>) => void;
+  removeItem: (id: string) => void;
   setItems: (items: ShoppingItem[]) => void;
 }
 
@@ -23,27 +23,30 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
         <Droppable droppableId='shoppingList'>
           {(provided) => (
             <List {...provided.droppableProps} ref={provided.innerRef}>
-              {items.map((item, index) => (
-                <Draggable
-                  key={item.id}
-                  draggableId={item.id.toString()}
-                  index={index}
-                >
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <ShoppingItemComponent
-                        item={item}
-                        editItem={editItem}
-                        removeItem={removeItem}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
+              {items.map((item, index) => {
+                console.log('Item ID:', item.id, 'Type:', typeof item.id); // Debug line
+                return (
+                  <Draggable
+                    key={item.id}
+                    draggableId={String(item.id)}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <ShoppingItemComponent
+                          item={item}
+                          editItem={editItem}
+                          removeItem={removeItem}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              })}
               {provided.placeholder}
             </List>
           )}

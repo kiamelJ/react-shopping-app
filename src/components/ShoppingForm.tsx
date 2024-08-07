@@ -4,15 +4,16 @@ import { ShoppingItem } from '../api';
 
 interface ShoppingFormProps {
   addItem: (item: Omit<ShoppingItem, 'id'>) => void;
+  items: ShoppingItem[];
 }
 
-const ShoppingForm: React.FC<ShoppingFormProps> = ({ addItem }) => {
+const ShoppingForm: React.FC<ShoppingFormProps> = ({ addItem, items }) => {
   const [name, setName] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name) return;
-    addItem({ name, isComplete: false });
+    addItem({ name, isComplete: false, position: items.length });
     setName('');
   };
 
