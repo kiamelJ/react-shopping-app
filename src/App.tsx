@@ -26,6 +26,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const getItems = async () => {
       const itemsFromServer = await fetchItems();
+      console.log('Items fetched from API:', itemsFromServer); // Debug log
       setItems(itemsFromServer);
       setLoading(false);
     };
@@ -42,9 +43,16 @@ const App: React.FC = () => {
     updatedItem: Omit<ShoppingItem, 'id'>
   ) => {
     try {
-      console.log('Editing item with id:', id); // Debug log
+      console.log('Editing item with id:', id, updatedItem); // Debug log
       const newItem = await updateItem(id, updatedItem);
-      setItems(items.map((item) => (item.id === id ? newItem : item)));
+      console.log('Updated item received from API:', newItem); // Debug log
+      setItems((prevItems) => {
+        const updatedItems = prevItems.map((item) =>
+          item.id === id ? newItem : item
+        );
+        console.log('Items after edit:', updatedItems); // Debug log
+        return updatedItems;
+      });
     } catch (error) {
       console.error('Failed to update item:', error);
     }
@@ -66,13 +74,14 @@ const App: React.FC = () => {
     const [reorderedItem] = reorderedItems.splice(result.source.index, 1);
     reorderedItems.splice(result.destination.index, 0, reorderedItem);
 
-    reorderedItems.forEach((item, index) => {
-      item.position = index;
-    });
+    const updatedItems = reorderedItems.map((item, index) => ({
+      ...item,
+      position: index,
+    }));
 
-    setItems(reorderedItems);
-    console.log('Updating order with:', reorderedItems); // Debug log
-    updateOrder(reorderedItems);
+    setItems(updatedItems);
+    console.log('Updating order with:', updatedItems); // Debug log
+    updateOrder(updatedItems);
   };
 
   return (

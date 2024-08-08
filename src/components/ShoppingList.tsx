@@ -24,11 +24,15 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
           {(provided) => (
             <List {...provided.droppableProps} ref={provided.innerRef}>
               {items.map((item, index) => {
-                console.log('Item ID:', item.id, 'Type:', typeof item.id); // Debug line
+                if (!item.id) {
+                  console.error('Item with undefined id:', item);
+                }
+                console.log('Rendering item:', item); // Debug line
+
                 return (
                   <Draggable
-                    key={item.id}
-                    draggableId={String(item.id)}
+                    key={item.id} // Ensuring key is assigned correctly
+                    draggableId={String(item.id)} // Using item.id directly for draggableId
                     index={index}
                   >
                     {(provided) => (
