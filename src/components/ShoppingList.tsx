@@ -1,45 +1,56 @@
 import React from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { List, Card, CardContent } from '@mui/material';
 import ShoppingItemComponent from './ShoppingItem';
 import { ShoppingItem } from '../api';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 interface ShoppingListProps {
   items: ShoppingItem[];
+  setItems: React.Dispatch<React.SetStateAction<ShoppingItem[]>>;
   editItem: (id: string, item: Omit<ShoppingItem, 'id'>) => void;
   removeItem: (id: string) => void;
-  setItems: (items: ShoppingItem[]) => void;
 }
 
 const ShoppingList: React.FC<ShoppingListProps> = ({
   items,
+  setItems,
   editItem,
   removeItem,
-  setItems,
 }) => {
-  return (
-    <Card style={{ marginTop: '20px' }}>
-      <CardContent>
-        <Droppable droppableId='shoppingList'>
-          {(provided) => (
-            <List {...provided.droppableProps} ref={provided.innerRef}>
-              {items.map((item, index) => {
-                if (!item.id) {
-                  console.error('Item with undefined id:', item);
-                }
-                console.log('Rendering item:', item); // Debug line
+  const handleOnDragEnd = (result: any) => {
+    if (!result.destination) return;
 
-                return (
-                  <Draggable
-                    key={item.id} // Ensuring key is assigned correctly
-                    draggableId={String(item.id)} // Using item.id directly for draggableId
-                    index={index}
-                  >
+    const reorderedItems = Array.from(items);
+    const [movedItem] = reorderedItems.splice(result.source.index, 1);
+    reorderedItems.splice(result.destination.index, 0, movedItem);
+
+    // Update the list order in state
+    // Update the list order in state
+    setItems(reorderedItems);
+  };
+
+  return (
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <Card style={{ marginTop: '20px' }}>
+        <CardContent>
+          <Droppable droppableId='droppable-list'>
+            {(provided) => (
+              <List {...provided.droppableProps} ref={provided.innerRef}>
+                {items.map((item, index) => (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
                     {(provided) => (
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
+                        style={{
+                          userSelect: 'none',
+                          padding: 16,
+                          margin: '0 0 8px 0',
+                          backgroundColor: '#ffffff',
+                          border: '1px solid #ddd',
+                          ...provided.draggableProps.style,
+                        }}
                       >
                         <ShoppingItemComponent
                           item={item}
@@ -49,14 +60,14 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
                       </div>
                     )}
                   </Draggable>
-                );
-              })}
-              {provided.placeholder}
-            </List>
-          )}
-        </Droppable>
-      </CardContent>
-    </Card>
+                ))}
+                {provided.placeholder}
+              </List>
+            )}
+          </Droppable>
+        </CardContent>
+      </Card>
+    </DragDropContext>
   );
 };
 

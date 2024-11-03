@@ -15,11 +15,11 @@ const ShoppingItemComponent: React.FC<ShoppingItemProps> = ({
   editItem,
   removeItem,
 }) => {
+  console.log('Rendering item:', item); // Log the item being rendered
+
   const handleEdit = () => {
     const updatedName = prompt('Enter new name:', item.name);
     if (updatedName) {
-      console.log('Editing item:', item.id); // Debug log
-
       editItem(item.id, {
         name: updatedName,
         isComplete: item.isComplete,
@@ -29,7 +29,6 @@ const ShoppingItemComponent: React.FC<ShoppingItemProps> = ({
   };
 
   const handleRemove = () => {
-    console.log('Removing item:', item.id); // Debug log
     removeItem(item.id);
   };
 
@@ -42,7 +41,7 @@ const ShoppingItemComponent: React.FC<ShoppingItemProps> = ({
           width: '100%',
         }}
       >
-        <span>{item.name}</span>
+        <span>{item.name}</span> {/* Ensure this renders correctly */}
         <Box>
           <IconButton onClick={handleEdit}>
             <EditIcon />

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    //  baseURL: 'https://mjshoppingappapi-adapemdugdf3cuhb.swedencentral-01.azurewebsites.net/api',
-    baseURL: 'https://localhost:7158/api',
+    baseURL: 'https://mjshoppingappapi-adapemdugdf3cuhb.swedencentral-01.azurewebsites.net/api', // CS to Azure API
+    // baseURL: 'https://localhost:7158/api', // CS to local api
 });
 
 export interface ShoppingItem {
@@ -28,10 +28,10 @@ export const createItem = async (item: ShoppingItemDTO): Promise<ShoppingItem> =
     return response.data;
 };
 
-export const updateItem = async (id: string, item: ShoppingItemDTO): Promise<ShoppingItem> => {
-    console.log('Calling updateItem with:', id, item); // Debug log
-    const response = await api.put<ShoppingItem>(`/shoppingitems/${id}`, item);
-    return response.data;
+export const updateItem = async (id: string, updatedItem: Omit<ShoppingItem, 'id'>): Promise<ShoppingItem> => {
+  const response = await api.put(`/shoppingitems/${id}`, updatedItem);
+  console.log('API response for updateItem:', response.data); // Debug log
+  return response.data; // Ensure this contains the full item object
 };
 
 export const deleteItem = async (id: string): Promise<void> => {

@@ -12,12 +12,10 @@ import {
   updateItem,
   deleteItem,
   ShoppingItem,
-  updateOrder,
 } from './api';
 import ShoppingList from './components/ShoppingList';
 import ShoppingForm from './components/ShoppingForm';
 import './styles.css';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 const App: React.FC = () => {
   const [items, setItems] = useState<ShoppingItem[]>([]);
@@ -26,7 +24,6 @@ const App: React.FC = () => {
   useEffect(() => {
     const getItems = async () => {
       const itemsFromServer = await fetchItems();
-      console.log('Items fetched from API:', itemsFromServer); // Debug log
       setItems(itemsFromServer);
       setLoading(false);
     };
@@ -42,46 +39,16 @@ const App: React.FC = () => {
     id: string,
     updatedItem: Omit<ShoppingItem, 'id'>
   ) => {
-    try {
-      console.log('Editing item with id:', id, updatedItem); // Debug log
-      const newItem = await updateItem(id, updatedItem);
-      console.log('Updated item received from API:', newItem); // Debug log
-      setItems((prevItems) => {
-        const updatedItems = prevItems.map((item) =>
-          item.id === id ? newItem : item
-        );
-        console.log('Items after edit:', updatedItems); // Debug log
-        return updatedItems;
-      });
-    } catch (error) {
-      console.error('Failed to update item:', error);
-    }
+    const newItem = await updateItem(id, updatedItem);
+    console.log('Updated item from API:', newItem); // Log the updated item
+    setItems((prevItems) =>
+      prevItems.map((item) => (item.id === id ? newItem : item))
+    );
   };
 
   const removeItem = async (id: string) => {
-    try {
-      await deleteItem(id);
-      setItems(items.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error('Failed to delete item:', error);
-    }
-  };
-
-  const handleOnDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-
-    const reorderedItems = Array.from(items);
-    const [reorderedItem] = reorderedItems.splice(result.source.index, 1);
-    reorderedItems.splice(result.destination.index, 0, reorderedItem);
-
-    const updatedItems = reorderedItems.map((item, index) => ({
-      ...item,
-      position: index,
-    }));
-
-    setItems(updatedItems);
-    console.log('Updating order with:', updatedItems); // Debug log
-    updateOrder(updatedItems);
+    await deleteItem(id);
+    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
   return (
@@ -104,14 +71,12 @@ const App: React.FC = () => {
               <CircularProgress />
             </div>
           ) : (
-            <DragDropContext onDragEnd={handleOnDragEnd}>
-              <ShoppingList
-                items={items}
-                editItem={editItem}
-                removeItem={removeItem}
-                setItems={setItems}
-              />
-            </DragDropContext>
+            <ShoppingList
+              items={items}
+              setItems={setItems}
+              editItem={editItem}
+              removeItem={removeItem}
+            />
           )}
         </CardContent>
       </Card>
