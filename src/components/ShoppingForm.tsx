@@ -20,17 +20,31 @@ const ShoppingForm: React.FC<ShoppingFormProps> = ({ addItem, items }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      style={{ display: 'flex', alignItems: 'center' }}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
     >
       <TextField
-        label='Add Item'
+        label='Lägg till vara'
         variant='outlined'
         value={name}
         onChange={(e) => setName(e.target.value)}
-        style={{ marginRight: '10px' }}
+        style={{ marginRight: '10px', flexGrow: 1 }}
       />
-      <Button variant='contained' color='primary' type='submit'>
-        Add
+      <Button
+        variant='contained'
+        sx={{
+          backgroundColor: '#3CB371',
+          color: '#fff',
+          '&:hover': { backgroundColor: '#2E8B57' },
+          width: '160px',
+          height: '56px',
+        }}
+        type='submit'
+      >
+        Lägg till
       </Button>
     </form>
   );

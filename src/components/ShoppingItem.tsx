@@ -33,23 +33,27 @@ const ShoppingItemComponent: React.FC<ShoppingItemProps> = ({
   };
 
   return (
-    <ListItem>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%',
-        }}
-      >
-        <span>{item.name}</span> {/* Ensure this renders correctly */}
-        <Box>
-          <IconButton onClick={handleEdit}>
-            <EditIcon />
-          </IconButton>
-          <IconButton onClick={handleRemove}>
-            <DeleteIcon />
-          </IconButton>
-        </Box>
+    <ListItem
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%',
+        padding: '16px',
+        margin: '8px 0',
+        border: 'none',
+        boxShadow: '0 1px 4px rgba(0, 0, 0, 0.2)', // Light box shadow
+        borderRadius: '8px', // Rounded corners for a modern look
+        backgroundColor: '#fff',
+      }}
+    >
+      <span>{item.name}</span> {/* Ensure this renders correctly */}
+      <Box>
+        <IconButton onClick={handleEdit} sx={{ color: '#1E90FF' }}>
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={handleRemove} sx={{ color: '#FF0000' }}>
+          <DeleteIcon />
+        </IconButton>
       </Box>
     </ListItem>
   );

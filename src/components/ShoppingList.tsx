@@ -25,14 +25,13 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
     reorderedItems.splice(result.destination.index, 0, movedItem);
 
     // Update the list order in state
-    // Update the list order in state
     setItems(reorderedItems);
   };
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
-      <Card style={{ marginTop: '20px' }}>
-        <CardContent>
+      <Card style={{ marginTop: '20px', boxShadow: 'none', border: 'none' }}>
+        <CardContent style={{ padding: 0 }}>
           <Droppable droppableId='droppable-list'>
             {(provided) => (
               <List {...provided.droppableProps} ref={provided.innerRef}>
@@ -45,10 +44,10 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
                         {...provided.dragHandleProps}
                         style={{
                           userSelect: 'none',
-                          padding: 16,
-                          margin: '0 0 8px 0',
+                          padding: 4,
+                          margin: '0 0 0 0',
                           backgroundColor: '#ffffff',
-                          border: '1px solid #ddd',
+                          border: 'none',
                           ...provided.draggableProps.style,
                         }}
                       >

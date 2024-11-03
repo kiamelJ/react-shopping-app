@@ -40,7 +40,7 @@ const App: React.FC = () => {
     updatedItem: Omit<ShoppingItem, 'id'>
   ) => {
     const newItem = await updateItem(id, updatedItem);
-    console.log('Updated item from API:', newItem); // Log the updated item
+    // console.log('Updated item from API:', newItem); // Log the updated item
     setItems((prevItems) =>
       prevItems.map((item) => (item.id === id ? newItem : item))
     );
@@ -53,10 +53,14 @@ const App: React.FC = () => {
 
   return (
     <Container maxWidth='sm' style={{ marginTop: '20px' }}>
-      <Card>
+      <Card
+        sx={{
+          boxShadow: 'none', // Remove the default shadow
+        }}
+      >
         <CardContent>
           <Typography variant='h4' align='center' gutterBottom>
-            Shopping List
+            Handlingslista
           </Typography>
           <ShoppingForm addItem={addItem} items={items} />
           {loading ? (
