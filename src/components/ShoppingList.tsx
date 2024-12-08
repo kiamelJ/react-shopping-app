@@ -2,7 +2,7 @@ import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { List, Card, CardContent } from '@mui/material';
 import ShoppingItemComponent from './ShoppingItem';
-import { ShoppingItem } from '../api';
+import { ShoppingItem, api } from '../api';
 
 interface ShoppingListProps {
   items: ShoppingItem[];
@@ -17,7 +17,7 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
   editItem,
   removeItem,
 }) => {
-  const handleOnDragEnd = (result: any) => {
+  const handleOnDragEnd = async (result: any) => {
     if (!result.destination) return;
 
     const reorderedItems = Array.from(items);
@@ -26,6 +26,19 @@ const ShoppingList: React.FC<ShoppingListProps> = ({
 
     // Update the list order in state
     setItems(reorderedItems);
+
+    // Add updated positions to items and send to backend. Här är koden som jag missade första gången för att korrekt göra uppdatering i databasen.
+    const itemsWithPositions = reorderedItems.map((item, index) => ({
+      ...item,
+      position: index, // Add the position field
+    }));
+
+    try {
+      await api.put('/shoppingitems/updateOrder', itemsWithPositions);
+      console.log('Order updated successfully');
+    } catch (error) {
+      console.error('Failed to update order', error);
+    }
   };
 
   return (
