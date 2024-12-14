@@ -4,8 +4,8 @@ import axios from 'axios';
 // ut deklarationen (behöver inte vara en const, kan vara annat också) och så kan man importera den i andra filer och då använder du exakt det namnet,
 // går ej att sätta annat namn som man kan vid en default export.
 export const api = axios.create({
-    // baseURL: 'https://mjshoppingappapi-adapemdugdf3cuhb.swedencentral-01.azurewebsites.net/api', // CS to Azure API
-    baseURL: 'https://localhost:7158/api', // CS to local api
+    baseURL: 'https://mjshoppingappapi-adapemdugdf3cuhb.swedencentral-01.azurewebsites.net/api', // CS to Azure API
+    // baseURL: 'https://localhost:7158/api', // CS to local api
 });
 
 export interface ShoppingItem {
